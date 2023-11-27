@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 export default function SignUp() {
@@ -7,7 +7,7 @@ export default function SignUp() {
    const [formsData,setFormsdata] = useState({});
    const [loading,setloading] = useState(false);
    const [error,setError] = useState(false);
-
+   const navigate = useNavigate();
    const handleChange = (e)=>{
    setFormsdata({...formsData,[e.target.id]:e.target.value})
    }
@@ -24,14 +24,14 @@ export default function SignUp() {
         body: JSON.stringify(formsData)
       })
       const data = await res.json();
-      console.log(data);
+      
       setloading(false)
       setError(false)
 
       if (data.Success === false) {
         setError(true)
       }
-     
+      navigate('/')
     } catch (error) {
       setloading(true)
     }
@@ -42,7 +42,7 @@ export default function SignUp() {
       <h1 className="text-3xl text-center font-semibold my-7">Sign up</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input type="text" placeholder="UserName" id="userName" className="bg-slate-100 p-3 rounded-lg" onChange={handleChange} />
-        <input type="text" placeholder="Email" id="emailId" className="bg-slate-100 p-3 rounded-lg" onChange={handleChange}/>
+        <input type="text" placeholder="Email" id="email" className="bg-slate-100 p-3 rounded-lg" onChange={handleChange}/>
         <input type="password" placeholder="Password" id="password" className="bg-slate-100 p-3 rounded-lg" onChange={handleChange}/>
         <button disabled={loading} className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
          {loading ? "Loading...":'Sign Up'}
